@@ -1,0 +1,50 @@
+%\title{Example letter using the newlfm LaTeX package}
+%
+% See http://texblog.org/2013/11/11/latexs-alternative-letter-class-newlfm/
+% and http://www.ctan.org/tex-archive/macros/latex/contrib/newlfm
+% for more information.
+%
+\documentclass[12pt,stdletter,noaddrto, orderfromtodate,sigleft]{newlfm}
+\usepackage{blindtext, xfrac}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\@zfancyhead}{\fancy@reset}{\f@nch@reset}{}{}
+\patchcmd{\@set@em@up}{\f@ncyolh}{\f@nch@olh}{}{}
+\patchcmd{\@set@em@up}{\f@ncyolh}{\f@nch@olh}{}{}
+\patchcmd{\@set@em@up}{\f@ncyorh}{\f@nch@orh}{}{}
+\makeatother
+
+\newlfmP{dateskipbefore=20pt}
+\newlfmP{sigsize=20pt}
+\newlfmP{sigskipbefore=50pt}
+
+\newlfmP{Headlinewd=0pt,Footlinewd=0pt}
+
+\namefrom{Christopher B. Smiet\\
+          Ralf Mackenbach}
+\addrfrom{%
+    Princeton Plasma Physics Laboratory \\
+    100 Stellarator Road \\
+    Princeton \\
+    NJ 08540
+}
+
+\addrto{%
+Physical Review Letters
+}
+\dateset{\today}
+
+\greetto{Dear editor,}
+
+\closeline{Yours faithfully,}
+
+\begin{document}
+\begin{newlfm}
+Please find attached our manuscript entitled `Toy model for the Sawtooth oscillation'.
+
+\end{newlfm}
+
+
+\end{document}

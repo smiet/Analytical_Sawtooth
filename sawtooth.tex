@@ -1,0 +1,68 @@
+\documentclass[%
+%   preprint,
+superscriptaddress,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose,
+%preprint,
+%showpacs,preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+%twocolumn,
+amsmath,amssymb,
+aps,
+pre,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+floatfix,
+]{revtex4-2}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{hyperref}% add hypertext capabilities
+\usepackage{color}
+\usepackage{verbatim}
+\graphicspath{{./fig/}}
+%\usepackage{epstopdf}
+%\usepackage{auto-pst-pdf}
+
+
+\begin{document}
+\title{Toy model for the sawtooth oscillation}
+\author{Ralf Mackenbach}
+\affiliation{Princeton Plasma Physics Laboratory, Princeton University, Princeton, New Jersey, USA}
+\author{C. B. Smiet}
+\affiliation{Princeton Plasma Physics Laboratory, Princeton University, Princeton, New Jersey, USA}
+\affiliation{Huygens-Kamerlingh Onnes Laboratory, Leiden University, P.O.\ Box 9504, 2300 RA Leiden, The Netherlands}
+
+\begin{abstract}
+The Kadomtsev model describes the sawtooth crash as an internal kink driven instability that redistributes the core helical flux. 
+It predicts the final state from an initial state, but does not specify the evolution in the crash phase. 
+In this paper we present a minimal analytical model with two free parameters that reproduces the predicted changes in topology. 
+This model paints an intuitive picture of how the magnetic topology changes during a sawtooth crash. 
+Such a model is important for fusion research because the rapidly chaning magnetic field during the crash phase crates electric fields that scatter fast particles. 
+\end{abstract}
+\maketitle
+
+The sawtooth oscillation occurs when the core current tokamak fusion reactor exceeds a specific threshold. 
+Because of the temperature dependent Spitzer resistivity, the plasma current that creates the rotational transform in the reactor preferentially concentrates on the hottest plasma region near the magnetic axis. 
+This decreases the safety factor (increases the field line winding) around the core. 
+When the parameters of a tokamak discharge are such that the steady-state current density would result in a safety factor below 1 on axis, the sawtooth cycle occurs. 
+
+According to the Kadomtsev model~\cite{kadomtsev1975disruptive}, the core region within the $q=1$ surface becomes susceptible to an internal kink mode~\cite{coppi1976resistive}. 
+This pushes out the core region and the $q=1$ surface is broken into an island chain. 
+Hot plasma from the core is mixed with cold plasma from outside of the $q=1$ surface into the growing $m/n=1/1$ island. 
+This growing island eventually completely displaces the hot core, and the temperature and current are re-distributed. 
+Eventually the core increases in temperature again and current diffuses into the core until a new sawtooth crash is triggered. 
+
+
+
+\bibliographystyle{naturemag}
+\bibliography{refs}
+
+\end{document}
