@@ -1,0 +1,12 @@
+*.png
+*.db 
+*.pdf
+*.aux 
+*.log 
+*.bbl 
+*.dvi
+*.blg 
+*.out
+*.gz
+*Notes.bib
+old/*
