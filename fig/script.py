@@ -15,7 +15,7 @@ rc('ytick.major', size=2.5)
 rc('xtick', direction='in')
 rc('ytick', direction='in')
 
-define the function that we are integrating
+# define the function that we are integrating
 def pf(xx, amplitude, epsilon):
     """
     Sum of three functions, which reproduce an analytical model for a Kadomstev
