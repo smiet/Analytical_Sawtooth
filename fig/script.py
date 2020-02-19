@@ -43,23 +43,24 @@ randoms = np.random.random(numstreams)# array full of randoms for random colors
 streampoints = fns.linepoints(np.array((1.005,0,0)), np.array((1.54568542494, 0, .59568542494)), numstreams ) #starting points (50-tuple of x,y,z coordinates) that lie on a line
 
 
-
-
-
-
-
 # Fully parameterized plot.
-parameter = np.linspace(0, -1, num=line_resp1, endpoint=False)
+parameters = np.linspace(0, -1, num=line_resp1, endpoint=False)
 
-for num, parameter in enumerate(parameter):
+alpha   =   [0.025464790894703267 - 0.016976527263135505*np.cos(4*parameter*np.pi) - 0.0033953054526271037*np.cos(8*parameter*np.pi) - 0.040000000000000036*np.sin(2*parameter*np.pi) + \
+            2.7305908429669844e-18*np.sin(4*parameter*np.pi) - 1.734723475976807e-18*np.sin(6*parameter*np.pi) - 1.843267981421152e-18*np.sin(8*parameter*np.pi) + \
+            8.673617379884035e-19*np.sin(10*parameter*np.pi) for parameter in parameters]
+epsilon =  [0.5000000000000006 - 0.4526423672846763*np.cos(2*parameter*np.pi) + 7.01943515742626e-17*np.cos(4*parameter*np.pi) - 0.022515818587186147*np.cos(6*parameter*np.pi) - \
+            3.0014068312294517e-16*np.cos(8*parameter*np.pi) - 0.008105694691387139*np.cos(10*parameter*np.pi) - 1.6653345369377348e-16*np.sin(2*parameter*np.pi) + \
+            0.053051647697298504*np.sin(4*parameter*np.pi) + 1.6653345369377348e-16*np.sin(6*parameter*np.pi) + 0.0053051647697298365*np.sin(8*parameter*np.pi) - \
+            2.220446049250313e-16*np.sin(10*parameter*np.pi) for parameter in parameters]
+
+
+
+
+
+
+for num, (alpha, epsilon) in enumerate(zip(alpha, epsilon)):
     print('starting poincare plot {}'.format(num))
-    alpha   =   0.025464790894703267 - 0.016976527263135505*np.cos(4*parameter*np.pi) - 0.0033953054526271037*np.cos(8*parameter*np.pi) - 0.040000000000000036*np.sin(2*parameter*np.pi) + \
-                2.7305908429669844e-18*np.sin(4*parameter*np.pi) - 1.734723475976807e-18*np.sin(6*parameter*np.pi) - 1.843267981421152e-18*np.sin(8*parameter*np.pi) + \
-                8.673617379884035e-19*np.sin(10*parameter*np.pi)
-    epsilon =   0.5000000000000006 - 0.4526423672846763*np.cos(2*parameter*np.pi) + 7.01943515742626e-17*np.cos(4*parameter*np.pi) - 0.022515818587186147*np.cos(6*parameter*np.pi) - \
-                3.0014068312294517e-16*np.cos(8*parameter*np.pi) - 0.008105694691387139*np.cos(10*parameter*np.pi) - 1.6653345369377348e-16*np.sin(2*parameter*np.pi) + \
-                0.053051647697298504*np.sin(4*parameter*np.pi) + 1.6653345369377348e-16*np.sin(6*parameter*np.pi) + 0.0053051647697298365*np.sin(8*parameter*np.pi) - \
-                2.220446049250313e-16*np.sin(10*parameter*np.pi)
     fig = plt.figure()
     fig.set_size_inches(10,14)
     gs = gridspec.GridSpec(2, 1, height_ratios=[3.5,1], hspace =0.1)

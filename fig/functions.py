@@ -197,7 +197,7 @@ class stream:
 
         # declare vectors
         xMid    = np.zeros(3)
-        xSingle = np.zeros(3)
+        xnp.single = np.zeros(3)
         xHalf   = np.zeros(3)
         xDouble = np.zeros(3)
 
