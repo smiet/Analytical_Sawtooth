@@ -31,6 +31,12 @@ floatfix,
 %\usepackage{epstopdf}
 %\usepackage{auto-pst-pdf}
 
+%todo Chris: Write about 1/1 mode
+%todo Chris: Write results/figure explanation section
+
+%todo Ralf: Write q_\infty derivation
+%todo Ralf: Read and improve introduction. 
+
 
 \begin{document}
 \title{Toy model for the sawtooth oscillation}
@@ -41,7 +47,6 @@ floatfix,
 \affiliation{Huygens-Kamerlingh Onnes Laboratory, Leiden University, P.O.\ Box 9504, 2300 RA Leiden, The Netherlands}
 
 \begin{abstract}
-\textbf{HALLO CHRIS}
   The Sawtooth crash is an instability occurring in the core of a tokamak plasma that redistributes the temperature and pressure in the core region.
   In the Kadomtsev model the crash is caused by a 1/1 internal kink that reconnects the hot plasma within the core region.
   In this paper we present a minimal analytical model with two free parameters that reproduces the predicted changes in topology.
@@ -67,19 +72,19 @@ In this paper we present a simple analytical toy model for the above process tha
 Other expressions for the time-dependent magnetic topology during the sawtooth crash have been presented by Kolesnichenko~\cite{kolesnichenko1996theory} and Jaulmes~\cite{jaulmes2014redistribution}.
 These works calculate the intermediate states in the Kadomtsev reconnection process, whereas the current treatment separates the reconnection phase into two separate and independent perturbations, resulting in a more analytically tractable and intuitive picture, at the cost of accuracy.
 
-\section*{Fields}
+\section*{Initial magnetic field}
 The magnetic field in a tokamak ideally consists of nested toroidal magnetic surfaces with a monotonically increasing $q$-profile.
 We generate such an equilibrium field using a poloidal flux function $\psi_p(R, Z)$ and a toroidal current function $I(\psi_p)$.
 The coordinates used are illustrated in figure~\ref{fig:coords}.
 Physically $\psi_p$ represents the amount of flux through the circular disc with radius R centered on the $Z$ axis (indicated by the green circle in figure~\ref{fig:coords}.
 $I$, which is sometimes called $F$ or $G$, represents the current through the same surface divided by 2$\pi$.
 \begin{figure}\label{fig:coords}
-  \includegraphics{fig/torus.png}
+  \includegraphics[width=0.7\textwidth]{fig/torus.png}
   \caption{Coordinates used for generating the magnetic field. }
 \end{figure}
 
 The magnetic fields are calculated from $\psi_p$ and $I$ using:
-\begin{equation}
+\begin{equation}\label{eq:unperturbed}
   B_R = -\frac{1}{R} \frac{\partial \psi_p}{\partial z}, \quad B_z= \frac{1}{R} \frac{\partial
   \psi_p}{\partial R}, \quad
   B_\phi = \frac{1}{R} I.
@@ -89,20 +94,20 @@ For the poloidal flux function we use
 \begin{equation}
   \psi_p = a^2
 \end{equation}
-where $a=\sqrt{Z^2 + (R-R_0^2}$ with $R_0$ the location of the magnetic axis.
+where $a=\sqrt{Z^2 + (R-R_0)^2}$ with $R_0$ the location of the magnetic axis.
 The surfaces of constant $\psi_p$, which are magnetic surfaces, are thus circular-cross-section concentric tori around a magnetic axis located at $R=R_0$.
 
 For our current function $I$ we choose the following relation:
 \begin{equation}
-  I(\psi) = 2(q_0 + \alpha \psi_p)\sqrt{R_0-\psi_p}
+  I(\psi) = 2(q_0 + \gamma \psi_p)\sqrt{R_0-\psi_p}
 \end{equation}
 
 
 The safety factor on each surface is calculated through~\cite{wesson2011tokamaks}:
 \begin{equation}\label{eq:qprofint}
-  q=\frac{1}{2\pi} \oint \frac{1}{R}\frac{B_\theta}{B_p}\dd l,
+  q=\frac{1}{2\pi} \oint \frac{1}{R}\frac{B_\theta}{B_p}\mathrm{d} l,
 \end{equation}
-where $B_p=\sqrt(B_R^2+B_Z^2}$ is the poloidal magnetic field.
+where $B_p=\sqrt{B_R^2+B_Z^2}$ is the magnitude of the poloidal magnetic field.
 The integration is carried out over a magnetic surface, which in the circular-cross-section concentric toroidal geometry can be done analytically.
 The quantity $R B_p$ is constant in this geometry, so we get:
 \begin{equation}
@@ -110,21 +115,36 @@ The quantity $R B_p$ is constant in this geometry, so we get:
 \end{equation}
 We evaluate the integral by integrating over $\theta$ and using the identities $R=R_0 +a \cos(\theta)$ and $\mathrm{d}l = a \mathrm{d}\theta$ to yield:
 \begin{equation}
-  \oint \frac{1}{R} \mathrm{d}l = /int_0^{2\pi} \frac{a}{R_0 + a \cos(\theta)} \mathrm{d}l =
-  \frac{2\pi a}{sqrt{R_0^2 -a^2}}
+  \oint \frac{1}{R} \mathrm{d}l = \int_0^{2\pi} \frac{a}{R_0 + a \cos(\theta)} \mathrm{d}l =
+  \frac{2\pi a}{\sqrt{R_0^2 -a^2}}
 \end{equation}
 In the above integration we used the facts that $R_0>0$ and $R_0>a>0$.
 This explains our choice of the function $I$, whose square root term cancels against the integrand, giving us the safety factor profile of:
 \begin{equation}
-  q=q_0 + \alpha \psi_p.
-\end{equation}.
+  q=q_0 + \gamma \psi_p.
+\end{equation}
 
-The expressions derived above thus give us an axisymmetric magnetic field where field lines lie on nested concentric toroidal magnetic surfaces.
+The expressions in \ref{eq:unperturbed} thus give us an axisymmetric magnetic field where field lines lie on nested concentric toroidal magnetic surfaces with monotonically increasing safety factor.
+For this calculation we choose the parameters $\gamma=1$ and $q_0=2/3$, thus yielding a
 This field has no shafranov shift (a shift of the magnetic axis outwards, induced by plasma pressure).
 Including a shafranov shift would make the factor $RB_p$ non-constant on a magnetic surface, thus requiring numerical integration for the evaluation of the integral in~\ref{eq:qprofint}.
 
+\section*{Internal Kink}
+We add a
 
+\section*{The Kadomtsev final state}
 
+\section{Perturbing the magnetic field}
+We can now perturb the initial magnetic field $B_0$ with the two perturbations $B_{1,1}$ and $B_\infty -B_0$ in the following way: 
+\begin{equation}\label{eq:totalfield}
+    \delta B =  B_0 + \alpha B_{1,1}+ \epsilon (B_\infty -B_0). 
+\end{equation}
+The factor $\alpha$ now determines the strength of the internal kink perturbation, whereas $\epsilon$ linearly interpolates between the initial state and the final state predicted by the Kadomtsev model. 
+
+We construct a Poincar\'e plot of the total 
+
+The parameter $\alpha$ thus determines the strength of the 1/1 internal kink.
+Increasing $\alpha$ whilst leaving $\epsilon$ at zero results in a rigid shift of the magentic flux surfaces in the core. 
 
 
 \bibliographystyle{naturemag}
