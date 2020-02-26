@@ -62,6 +62,8 @@ At a specific value of $q_0$ a fast instability is triggered that redistributes 
 This instability redistributes the poloidal and toroidal flux, resulting in a higher $q_0$.
 The sawtooth cycle resets, and current slowly accumulates on the axis until the instability is triggered again.
 
+A full numerical simulation of a sawtoothing discharge is shown in figure [REF]. [ADD ANIMATED GIF TO PAPER]
+
 One of the most enduring models for the sawtooth was presented by Kadomtsev~\cite{kadomtsev1975disruptive}.
 In this model the region within the $q=1$ surface becomes susceptible to an internal kink mode, a resistive tearing instability of the $q=1$ surface, or both~\cite{coppi1976resistive}.
 The plasma in the core reconnects with cold plasma from outside the $q=1$ surface along a helical ribbon on the $q=1$ surface, and is deposited in a growing 1/1 island.
@@ -132,19 +134,80 @@ Including a shafranov shift would make the factor $RB_p$ non-constant on a magne
 \section*{Internal Kink}
 We add a
 
+\begin{equation}\label{eq:kinky}
+{\rm[PLACEHOLDER]}
+\end{equation}
+
 \section*{The Kadomtsev final state}
 
 \section{Perturbing the magnetic field}
+
+
+We construct a Poincar\'e plot of the magnetic field. 
+A Poincar\'e plot gives a good sense of the magnetic connectivity. 
+It is calculated by taking a point in the $\phi=0$ plane, numerically calculating the magnetic field line passing through that point, and noting the location where the that field line passes through the plane every time it does so. 
+If a field line fills out a magnetic surface, and the the field line is followed for long enough, then the Poincar\'e section will start to fill out the circle that corresponds with the intersection of that magnetic surface and the $\phi=0$ plane. 
+This procedure is done for 100 different field lines, and each field line is given a different color.
+The Poincar\'e section for the unperturbed field (equation~\eqref{eq:unperturbed}) is visible in figure [REF TO FIG]. 
+
+We also calculate the safety factor of each field line, buy counting the number of times it winds around the magnetic axis of the unperturbed field. 
+This information is shown below the Poincar\'e plot. 
+
 We can now perturb the initial magnetic field $B_0$ with the two perturbations $B_{1,1}$ and $B_\infty -B_0$ in the following way: 
 \begin{equation}\label{eq:totalfield}
     \delta B =  B_0 + \alpha B_{1,1}+ \epsilon (B_\infty -B_0). 
 \end{equation}
 The factor $\alpha$ now determines the strength of the internal kink perturbation, whereas $\epsilon$ linearly interpolates between the initial state and the final state predicted by the Kadomtsev model. 
 
-We construct a Poincar\'e plot of the total 
+The effects of these two perturbations on the field can be interactively explored in figure [REF]. 
+In figure [REF] different combinations of $\alpha$ and $\epsilon$ can be specifed along a path, and a Poincar\e plot of every set of ($\alpha$, $\epsilon$) along this path will be computed. 
 
-The parameter $\alpha$ thus determines the strength of the 1/1 internal kink.
-Increasing $\alpha$ whilst leaving $\epsilon$ at zero results in a rigid shift of the magentic flux surfaces in the core. 
+When a path is chosen such that only $\alpha$ varies, but $\epsilon$ remains zero, we see the effect of the internal kink on the magnetic configuration. 
+As can be seen, this results in a shifting of the magnetic axis in the direction of the perturbation, and back again. 
+
+When only $\epsilon$ is varied, but $alpha$ is kept constant, the magnetic structure does not change at all. 
+The only change is seen in the plot of the safety factor, which just linearly interpolates between the initial value of $q_0=2/3$ [change!] and $q_0=1$ in the final Kadomtsev state. 
+
+An interesting thing happens when we first apply the internal kink $alpha$, and with this perturbation in place, start increasing $\epsilon$. 
+As soon as $\epsilon$ is non-zero, we see a drastic change in the magnetic structure. 
+We see a set of crescent-moon shaped curves in the Poincar\'e plot. 
+These are caused by field lines lying on a new type of magnetic surface, that does not surround the magnetic axis anymore. 
+Such a structure is called a \emph{magnetic island}. 
+Because this structure has appeared on the surface where previously $q=n/m=1/1$, this is called a $1/1$-island. 
+Opposite to the center of the island, we see the point where the tips of the crescent moon touch. 
+The point where the tips touch exaclty is called an X-point. 
+There is a field line at the center of the 'X' that comes back to itself after one rotation. 
+
+As we continue to increase  $\epsilon$, the size of the island keeps increasing, even when we keep $\alpha$ constant. 
+What $\epsilon$ does is to flatten the safety factor profile, bringing $q$ closer to 1 everywhere in the core region.
+As $q$ gets closer to 1, it means that field lines rotate around exactly once poloidally per toroidal rotation. 
+The perturbation $B_{1,1}$ given by equation~\eqref{eq:kinky} has exactly the same angular dependence. 
+That means that the effect of $B_{1,1}$ on the trajectory of a field line gets larger and larger, the closer $q$ gets to 1. 
+If $B_{1,1}$ adds a little push to the direction of a field line inone location, it will be adding the same push further along, and at every point, eventually completely changing the trajectory of the field line. 
+This effect, where the magnetic structure is strongly affected even by a very small perturabtion, if the effect accumulates in this way, is called \emph{magnetic resonance} or just resonance. 
+
+As we change $\epsilon$ towards 1, the safety factor becomes flatter, and closer to 1. 
+This means that the effect of the internal kink becomes stronger, pushing the original magnetic axis further out, and at the same time increasing the size of the island.
+When $\epsilon$ gets really close to 1, the original axis gets closer and closer to the X-point, and fewer and field lines surround it, while more and more field lines are part of the island. 
+Before $\epsilon$ reaches 1, the effect of the kink is already so strong, that the original axis is pushed into the X-point, and both dissappear!
+
+The island has grown so large that it has completely taken over, and the original axis has completely dissappeared. 
+If we have not returned $\alpha$ to zero, the magnetic field in the core will still be strongly distorted. 
+But the drive for such a perturbation has dissappeared now that the safety factor is above 1 everythwere, so the last step should be to return $\alpha$ to 1, and see that the magnetic structure becomes axisymmetric again. 
+The final step is to return to the original profile with $q_0<1$, from which the cycle starts anew. 
+
+- fast and slow
+- kink triggering
+- realistic path
+
+\section*{Conclusions and Discussion}
+The model we have presented above gives a very simple intuitive picture of the minimal perturbations that result in the Kadomtsev sawtooth. 
+We take two effects; the ideal kink and a linerar interpolation between two axisymmetric states, to reproduce the changes in magnetic topology that constitute the Kadomtsev satwooth. 
+A minimal model needs at least two parameters. Whether these two are simplest seems reasonable. 
+
+The evolution of the magnetic structure exhibited by our model is probably simpler than what would be physically realized. 
+A better approximation would be given by the models presented in~\cite{kolesnichenko1996theory, jaulmes2014redistribution}, as these models give a physical picture for the intermediate states between initial and final state. 
+Nevertheless, the states in these models will also not correspond exactly to the actual magnetic state during the sawtooth crash, as there will be many other effects present such as current sheet formation, deformation of the shape of the original axis, etc.
 
 
 \bibliographystyle{naturemag}
