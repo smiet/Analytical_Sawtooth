@@ -15,7 +15,10 @@
    stroke-miterlimit="10"
    id="svg133"
    sodipodi:docname="torus.svg"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   inkscape:export-filename="/home/smiet/Documents/Analytical_Sawtooth/fig/torus.png"
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200">
   <metadata
      id="metadata139">
     <rdf:RDF>
@@ -42,9 +45,9 @@
      inkscape:window-height="1144"
      id="namedview135"
      showgrid="false"
-     inkscape:zoom="1.3111111"
-     inkscape:cx="379.1512"
-     inkscape:cy="521.3727"
+     inkscape:zoom="0.92709555"
+     inkscape:cx="125.02374"
+     inkscape:cy="569.68426"
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
