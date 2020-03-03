@@ -16,7 +16,7 @@ rc('xtick', direction='in')
 rc('ytick', direction='in')
 
 # define the function that we are integrating
-def pf(xx, amplitude, epsilon):
+def pf(xx, alpha, epsilon, sf):
     """
     Sum of three functions, which reproduce an analytical model for a Kadomstev
     sawtooth crash. The first line represents the field before the crash, the
@@ -26,36 +26,45 @@ def pf(xx, amplitude, epsilon):
     (0,0) -> (amp_max,0) -> (amp_max,1) -> (0,1) -> (0,0).
 
     """
-    return  fns.torodal_field_squared_q(xx, sf=sf, shear=shear, epsilon = epsilon) - \
-            fns.ralf_pert(xx, width=0.3, amplitude = amplitude, ang=0.0) + \
-            fns.torodal_field_squared_q_final(xx, sf=(sf-0.1), shear=shear, epsilon = epsilon)
+    return  fns.torodal_field_squared_q(xx, sf=sf, shear=shear, epsilon = epsilon) + \
+            fns.ralf_pertII(xx, width=0.4, sf=sf, amplitude=alpha) + \
+            fns.torodal_field_squared_q_final(xx, sf=sf, shear=shear, epsilon = epsilon)
 
 
 
 #Define some parameters. These should not be changed by the user.
 shear = 1 #the rate at which the field 'twists'
-sf = 2/3  #the twisting at the very center
+sf = .91  #the twisting at the very center
 amp_max = 0.08 # highest value of our perturbation
 line_resp1 = 100  # the number of 'pictures' in the movie
 numstreams=50 #the number of field lines that are integrated (one integration can be one 'task' for the DCP
 cmap =  plt.get_cmap('gnuplot') #nice colors
 randoms = np.random.random(numstreams)# array full of randoms for random colors
-streampoints = fns.linepoints(np.array((1.005,0,0)), np.array((1.54568542494, 0, .59568542494)), numstreams ) #starting points (50-tuple of x,y,z coordinates) that lie on a line
+streampoints = fns.linepoints(np.array((1.,0,.25)), np.array((1, 0, -.8)), numstreams ) #starting points (50-tuple of x,y,z coordinates) that lie on a line
 
 
 # Fully parameterized plot.
 parameters = np.linspace(0, -1, num=line_resp1, endpoint=False)
 
-alpha   =   [0.025464790894703267 - 0.016976527263135505*np.cos(4*parameter*np.pi) - 0.0033953054526271037*np.cos(8*parameter*np.pi) - 0.040000000000000036*np.sin(2*parameter*np.pi) + \
-            2.7305908429669844e-18*np.sin(4*parameter*np.pi) - 1.734723475976807e-18*np.sin(6*parameter*np.pi) - 1.843267981421152e-18*np.sin(8*parameter*np.pi) + \
-            8.673617379884035e-19*np.sin(10*parameter*np.pi) for parameter in parameters]
-epsilon =  [0.5000000000000006 - 0.4526423672846763*np.cos(2*parameter*np.pi) + 7.01943515742626e-17*np.cos(4*parameter*np.pi) - 0.022515818587186147*np.cos(6*parameter*np.pi) - \
-            3.0014068312294517e-16*np.cos(8*parameter*np.pi) - 0.008105694691387139*np.cos(10*parameter*np.pi) - 1.6653345369377348e-16*np.sin(2*parameter*np.pi) + \
-            0.053051647697298504*np.sin(4*parameter*np.pi) + 1.6653345369377348e-16*np.sin(6*parameter*np.pi) + 0.0053051647697298365*np.sin(8*parameter*np.pi) - \
-            2.220446049250313e-16*np.sin(10*parameter*np.pi) for parameter in parameters]
+#alpha   =   [0.025464790894703267 - 0.016976527263135505*np.cos(4*parameter*np.pi) - 0.0033953054526271037*np.cos(8*parameter*np.pi) - 0.040000000000000036*np.sin(2*parameter*np.pi) + \
+#            2.7305908429669844e-18*np.sin(4*parameter*np.pi) - 1.734723475976807e-18*np.sin(6*parameter*np.pi) - 1.843267981421152e-18*np.sin(8*parameter*np.pi) + \
+#            8.673617379884035e-19*np.sin(10*parameter*np.pi) for parameter in parameters]
+#epsilon =  [0.5000000000000006 - 0.4526423672846763*np.cos(2*parameter*np.pi) + 7.01943515742626e-17*np.cos(4*parameter*np.pi) - 0.022515818587186147*np.cos(6*parameter*np.pi) - \
+#            3.0014068312294517e-16*np.cos(8*parameter*np.pi) - 0.008105694691387139*np.cos(10*parameter*np.pi) - 1.6653345369377348e-16*np.sin(2*parameter*np.pi) + \
+#            0.053051647697298504*np.sin(4*parameter*np.pi) + 1.6653345369377348e-16*np.sin(6*parameter*np.pi) + 0.0053051647697298365*np.sin(8*parameter*np.pi) - \
+#            2.220446049250313e-16*np.sin(10*parameter*np.pi) for parameter in parameters]
+
+alphamax = 0.05
+alpha =  np.linspace(0, alphamax, 10)
+alpha = np.append(alpha, np.ones(20)*alphamax)
+alpha = np.append(alpha, np.linspace(alphamax, 0, 20))
+
+epsilon =  np.zeros(10)
+epsilon = np.append(epsilon, np.linspace(0, 1, 20))
+epsilon = np.append(epsilon, np.ones(20))
 
 
-
+pf(np.array((1.,0.,0.)), 1., 1., 0.9)
 
 
 
@@ -72,7 +81,7 @@ for num, (alpha, epsilon) in enumerate(zip(alpha, epsilon)):
     ax2.plot(xx, sf + shear*xx**2, zorder=1)
     ax2.set_yticklabels([r'$\frac{2}{3}$', r'$1$', r'$1~\frac{1}{3}$'])
 
-    streamlines = fns.stream_multi(streampoints, vvfn=pf, tol=1e-6,  amplitude=alpha, epsilon=epsilon)
+    streamlines = fns.stream_multi(streampoints, vvfn=pf, tol=1e-6, sf=sf, alpha=alpha, epsilon=epsilon, iterMax=100000)
 
     RR = []
     zz = []
@@ -99,11 +108,11 @@ for num, (alpha, epsilon) in enumerate(zip(alpha, epsilon)):
 
     ax2.set_xlabel(r'$a$', fontsize = 25)
     ax2.set_ylabel(r'$q$', fontsize = 25)
-    ax2.set_ylim(0.5, 1.52)
+    ax2.set_ylim(0.8, 2.2)
     ax2.set_xlim(0., .8)
     ax2.set_yticks([2/3, 1, 1+1/3])
     ax2.axhline(1.0, c='k')
     ax2.axhline(2/3, c='c')
 
-    plt.savefig('part_1_twistprof_ampl_{}.png'.format(num+5), bbox_inches='tight')
+    plt.savefig('CHANGED_PERT{}.png'.format(num), bbox_inches='tight')
     plt.close()

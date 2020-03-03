@@ -44,7 +44,7 @@ def ralf_pert(xx, width=0.2, amplitude = 1.0, ang=0.0):
     return amplitude * B
 
 @jit(nopython=True)
-def torodal_field_squared_q_final(xx, sf=2/3, shear=2.5, epsilon = 1.0):
+def torodal_field_squared_q_final(xx, sf=2/3, shear=1, epsilon = 1.0):
     """
     Analytical function for the final state after Kadomstev reconnection
     The current jump normally present in these models is ignored in this
@@ -54,21 +54,25 @@ def torodal_field_squared_q_final(xx, sf=2/3, shear=2.5, epsilon = 1.0):
     if epsilon == 0: return np.array((0.,0.,0.))
     B = np.zeros(3)
 
-    B[0] =  (16*xx[1]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
-            (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) - \
-            4*xx[0]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
-            (8.*(xx[0]**2 + xx[1]**2))
+    a_mix = np.sqrt(2*(1-sf)/shear)
+    a = np.sqrt((np.sqrt(xx[0]**2 + xx[1]**2) - 1)**2 + xx[2]**2)
+    if a > a_mix:
+        B = torodal_field_squared_q(xx, sf=sf, shear=shear, epsilon=0)
+    else:
+        B[0] =  (16*xx[1]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
+                (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) - \
+                4*xx[0]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
+                (8.*(xx[0]**2 + xx[1]**2))
 
-    B[1] =  -(16*xx[0]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
-            (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) +  \
-            4*xx[1]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
-            (8.*(xx[0]**2 + xx[1]**2))
+        B[1] =  -(16*xx[0]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
+                (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) +  \
+                4*xx[1]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
+                (8.*(xx[0]**2 + xx[1]**2))
 
-    B[2] =  -((-1 + np.sqrt(xx[0]**2 + xx[1]**2))* \
-            (-4*sf - 3*xx[0]**2 + 6*np.sqrt(xx[0]**2 + xx[1]**2) - 3*(1 + xx[1]**2 + xx[2]**2)))/ \
-            (2.*np.sqrt(xx[0]**2 + xx[1]**2))
-
-    return -epsilon * B
+        B[2] =  -((-1 + np.sqrt(xx[0]**2 + xx[1]**2))* \
+                (-4*sf - 3*xx[0]**2 + 6*np.sqrt(xx[0]**2 + xx[1]**2) - 3*(1 + xx[1]**2 + xx[2]**2)))/ \
+                (2.*np.sqrt(xx[0]**2 + xx[1]**2))
+    return epsilon * B
 
 def linepoints(start, stop, npoints):
     """
@@ -197,7 +201,7 @@ class stream:
 
         # declare vectors
         xMid    = np.zeros(3)
-        xnp.single = np.zeros(3)
+        np.single = np.zeros(3)
         xHalf   = np.zeros(3)
         xDouble = np.zeros(3)
 
@@ -347,4 +351,38 @@ class stream:
         return np.sum((sides[:-1]^sides[1:]))                 #calculate the xor of the shifted sidetables (which is only true if one is shifted) and return the sum
 
 
+@jit(nopython=True)
+def ralf_pertII(xx, width=0.2, sf=2/3, shear=1, epsilon=0, amplitude =1.0):
+    """
+    (1,1) Kink as calculated in the notebook.
+    """
+
+    B = np.zeros(3)
+    if amplitude == 0:
+        return B
+    else:
+        B[0] = (xx[0]*((2*xx[0]*(width**2 - 2*xx[2]**2))/(xx[0]**2 + xx[1]**2)**2 + \
+               (4*xx[1]*(-1 + np.sqrt(xx[0]**2 + xx[1]**2))*xx[2]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)*\
+                  (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2))/(xx[0]**2 + xx[1]**2)**2.5 - \
+               (2*xx[1]*xx[2]*(4*(-1 + np.sqrt(xx[0]**2 + xx[1]**2))*(xx[0]**2 + xx[1]**2 - 2*np.sqrt(xx[0]**2 + xx[1]**2) + xx[2]**2)*\
+                     (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) - \
+                    width**2*np.sqrt(xx[0]**2 + xx[1]**2)*(1 + sf - 6*np.sqrt(xx[0]**2 + xx[1]**2) + 3*(xx[0]**2 + xx[1]**2) + 3*xx[2]**2)))/\
+                ((xx[0]**2 + xx[1]**2)**2.5*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2))))/\
+           (np.exp(((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)/width**2)*width**2)
+
+        B[1] = ((xx[1]*(2*xx[0]*(width**2 - 2*xx[2]**2) + (4*xx[1]*(-1 + np.sqrt(xx[0]**2 + xx[1]**2))*xx[2]*\
+                     np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)*(sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2))/\
+                   np.sqrt(xx[0]**2 + xx[1]**2)))/(xx[0]**2 + xx[1]**2)**2 + \
+             (2*xx[0]**2*xx[2]*(4*(-1 + np.sqrt(xx[0]**2 + xx[1]**2))*(xx[0]**2 + xx[1]**2 - 2*np.sqrt(xx[0]**2 + xx[1]**2) + xx[2]**2)*\
+                   (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) - \
+                  width**2*np.sqrt(xx[0]**2 + xx[1]**2)*(1 + sf - 6*np.sqrt(xx[0]**2 + xx[1]**2) + 3*(xx[0]**2 + xx[1]**2) + 3*xx[2]**2)))/\
+              ((xx[0]**2 + xx[1]**2)**2.5*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)))/\
+           (np.exp(((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)/width**2)*width**2)
+
+        B[2] = (2*(xx[0]*(width**2 + 2*(xx[0]**2 + xx[1]**2 - np.sqrt(xx[0]**2 + xx[1]**2)))*xx[2] - \
+               xx[1]*(-width**2 + 2*(-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2)*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)*\
+                (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/\
+           (np.exp(((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)/width**2)*width**2*(xx[0]**2 + xx[1]**2)**2)
+
+    return amplitude * B
 
