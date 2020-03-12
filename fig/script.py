@@ -55,11 +55,11 @@ parameters = np.linspace(0, -1, num=line_resp1, endpoint=False)
 #            2.220446049250313e-16*np.sin(10*parameter*np.pi) for parameter in parameters]
 
 alphamax = 0.05
-alpha =  np.linspace(0, alphamax, 10)
+alpha =  np.linspace(0, alphamax, 0)
 alpha = np.append(alpha, np.ones(20)*alphamax)
 alpha = np.append(alpha, np.linspace(alphamax, 0, 20))
 
-epsilon =  np.zeros(10)
+epsilon =  np.zeros(0)
 epsilon = np.append(epsilon, np.linspace(0, 1, 20))
 epsilon = np.append(epsilon, np.ones(20))
 
@@ -81,7 +81,7 @@ for num, (alpha, epsilon) in enumerate(zip(alpha, epsilon)):
     ax2.plot(xx, sf + shear*xx**2, zorder=1)
     ax2.set_yticklabels([r'$\frac{2}{3}$', r'$1$', r'$1~\frac{1}{3}$'])
 
-    streamlines = fns.stream_multi(streampoints, vvfn=pf, tol=1e-6, sf=sf, alpha=alpha, epsilon=epsilon, iterMax=100000)
+    streamlines = fns.stream_multi(streampoints, vvfn=pf, tol=1e-6, sf=sf, alpha=alpha, epsilon=epsilon, iterMax=10000)
 
     RR = []
     zz = []
@@ -96,7 +96,7 @@ for num, (alpha, epsilon) in enumerate(zip(alpha, epsilon)):
     locs = []
     for snum, streamline in enumerate(streamlines):
         twists.append(streamline.getTwist())
-        locs.append(np.sqrt(np.sum((streampoints[snum]-np.array((1,0,0)))**2)))
+        locs.append(np.sqrt(np.sum((streampoints[snum]-np.array((1,0,0)))**2)))  # distance from equilibrium axis at
     ax2.scatter(locs, 1/np.array(twists), color=cmap(randoms), zorder = 2)
     ax1.set_ylim(-1, 1)
 

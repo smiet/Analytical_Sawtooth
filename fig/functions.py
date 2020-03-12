@@ -59,17 +59,17 @@ def torodal_field_squared_q_final(xx, sf=2/3, shear=1, epsilon = 1.0):
     if a > a_mix:
         B = torodal_field_squared_q(xx, sf=sf, shear=shear, epsilon=0)
     else:
-        B[0] =  (16*xx[1]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
+        B[0] = -(16*xx[1]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
                 (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) - \
                 4*xx[0]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
                 (8.*(xx[0]**2 + xx[1]**2))
 
-        B[1] =  -(16*xx[0]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
+        B[1] =  (16*xx[0]*np.sqrt(-xx[0]**2 - xx[1]**2 + 2*np.sqrt(xx[0]**2 + xx[1]**2) - xx[2]**2)* \
                 (sf + (-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2) +  \
                 4*xx[1]*xx[2]*(4*sf + 3*((-1 + np.sqrt(xx[0]**2 + xx[1]**2))**2 + xx[2]**2)))/ \
                 (8.*(xx[0]**2 + xx[1]**2))
 
-        B[2] =  -((-1 + np.sqrt(xx[0]**2 + xx[1]**2))* \
+        B[2] =  ((-1 + np.sqrt(xx[0]**2 + xx[1]**2))* \
                 (-4*sf - 3*xx[0]**2 + 6*np.sqrt(xx[0]**2 + xx[1]**2) - 3*(1 + xx[1]**2 + xx[2]**2)))/ \
                 (2.*np.sqrt(xx[0]**2 + xx[1]**2))
     return epsilon * B
